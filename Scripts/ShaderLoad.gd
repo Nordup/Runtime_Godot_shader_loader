@@ -2,11 +2,9 @@ extends MeshInstance
 
 export (NodePath) var le_shader
 export (NodePath) var le_gdscript
-export (NodePath) var button_path
 export (NodePath) var spin_box_path
 onready var shader_path = get_node(le_shader) as LineEdit
 onready var gdscript_path = get_node(le_gdscript) as LineEdit
-onready var button = get_node(button_path) as BaseButton
 onready var spin_box = get_node(spin_box_path) as SpinBox
 
 
@@ -14,11 +12,15 @@ onready var spin_box = get_node(spin_box_path) as SpinBox
 func _process(delta):
 	var speed = spin_box.value
 	rotate_y(speed * delta)
-	
-	if (button.pressed):
-		load_Shader()
-		load_GDScript()
 
+
+# CanvasLayer/Load Button
+func _on_Load_button_up():
+	print("------------")
+	print("Loading...")
+	load_Shader()
+	load_GDScript()
+	print("Done!")
 
 func load_Shader():
 	# read shader string
@@ -31,7 +33,6 @@ func load_Shader():
 	# set to our material
 	get_active_material(0).shader = new_shader
 
-
 func load_GDScript():
 	# read GDScript string
 	var file = File.new()
@@ -43,4 +44,3 @@ func load_GDScript():
 	script.reload(true)
 	# add as child
 	add_child(script.new())
-
