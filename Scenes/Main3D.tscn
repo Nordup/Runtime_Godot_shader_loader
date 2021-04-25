@@ -4,9 +4,9 @@
 [ext_resource path="res://Scripts/CameraMovement.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/ShaderLoad.gd" type="Script" id=4]
 
-[sub_resource type="SphereMesh" id=1]
+[sub_resource type="SphereMesh" id=7]
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=6]
 shader = ExtResource( 1 )
 
 [sub_resource type="ProceduralSky" id=3]
@@ -17,13 +17,21 @@ background_sky = SubResource( 3 )
 
 [node name="Main" type="Spatial"]
 
-[node name="ShadererMesh" type="MeshInstance" parent="."]
-mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+[node name="CameraMovement" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="Camera" type="Camera" parent="CameraMovement"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
+current = true
+
+[node name="ShaderedMesh" type="MeshInstance" parent="."]
+mesh = SubResource( 7 )
+material/0 = SubResource( 6 )
 script = ExtResource( 4 )
 le_shader = NodePath("../CanvasLayer/Shader/LineEdit")
 le_gdscript = NodePath("../CanvasLayer/GDScript/LineEdit")
 spin_box_path = NodePath("../CanvasLayer/RotationSpeed/SpinBox")
+menu_button_path = NodePath("../CanvasLayer/ChooseMesh/MenuButton")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
@@ -121,6 +129,7 @@ __meta__ = {
 margin_left = 153.0
 margin_right = 227.0
 margin_bottom = 38.0
+min_value = -100.0
 step = 0.1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -137,17 +146,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ChooseMesh" type="Panel" parent="CanvasLayer"]
+margin_left = 28.0
+margin_top = 504.0
+margin_right = 255.0
+margin_bottom = 542.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButton" type="MenuButton" parent="CanvasLayer/ChooseMesh"]
+margin_right = 227.0
+margin_bottom = 38.0
+text = "Mesh"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.392733, 0.207235, -0.895999, 0.49016, 0.777195, 0.394603, 0.778142, -0.594156, 0.203652, -5.10705, 4.57743, 0 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 4 )
 
-[node name="Movement" type="Spatial" parent="."]
-script = ExtResource( 2 )
-
-[node name="Camera" type="Camera" parent="Movement"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
-current = true
-
-[connection signal="button_up" from="CanvasLayer/Load" to="ShadererMesh" method="_on_Load_button_up"]
+[connection signal="button_up" from="CanvasLayer/Load" to="ShaderedMesh" method="_on_Load_button_up"]

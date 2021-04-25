@@ -23,7 +23,7 @@ func _input(event):
 			camera.translate(-camera.translation * wheel_speed)
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			camera.translate(camera.translation * wheel_speed)
-		camera.translation.z = clamp(camera.translation.z , 1.5, 100)
+		camera.translation.z = clamp(camera.translation.z , 1.8, 100)
 
 
 func _process(delta):
